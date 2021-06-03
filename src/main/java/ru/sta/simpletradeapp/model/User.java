@@ -1,8 +1,6 @@
 package ru.sta.simpletradeapp.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,9 +8,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
 @Table(name = "usr")
 public class User {
 
@@ -22,7 +19,6 @@ public class User {
     private String password;
     private String name;
     private String surname;
-    private String patronymic;
     private String email;
     private String phoneNumber;
 
