@@ -1,4 +1,4 @@
-package ru.sta.simpletradeapp.config;
+package ru.sta.simpletradeapp.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
