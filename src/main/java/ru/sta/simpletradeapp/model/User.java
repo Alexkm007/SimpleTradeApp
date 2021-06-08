@@ -17,7 +17,6 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @Table(name = "usr")
-@Transactional
 public class User implements UserDetails, Serializable {
 
     @Id
@@ -33,7 +32,7 @@ public class User implements UserDetails, Serializable {
     private Boolean enabled;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     @Override
