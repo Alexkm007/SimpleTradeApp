@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -33,7 +34,7 @@ public class User implements UserDetails, Serializable {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
