@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
+import ru.sta.simpletradeapp.dto.UserDto;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,6 +33,16 @@ public class User implements UserDetails, Serializable {
     private String phoneNumber;
     private Boolean enabled;
 
+    public User(UserDto userDto) {
+        this.id = userDto.getId();
+        this.login = userDto.getLogin();
+        this.password = userDto.getPassword();
+        this.name = userDto.getName();
+        this.surname = userDto.getSurname();
+        this.email = userDto.getLogin();
+        this.phoneNumber = userDto.getPhoneNumber();
+        this.enabled = userDto.getEnabled();
+    }
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;

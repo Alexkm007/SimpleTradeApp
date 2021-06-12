@@ -12,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.sta.simpletradeapp.dto.AuthenticationRequestDTO;
+import ru.sta.simpletradeapp.dto.UserDto;
 import ru.sta.simpletradeapp.model.User;
 import ru.sta.simpletradeapp.security.jwt.JwtTokenProvider;
 import ru.sta.simpletradeapp.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,25 +38,25 @@ public class AuthenticationRestControllerV1 {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthenticationRequestDTO requestDto){
+    public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequestDTO requestDto){
         try {
-            String username = requestDto.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, requestDto.getPassword()));
-            User user = userService.findByUsername(username);
+            String login = requestDto.getLogin();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login, requestDto.getPassword()));
+            User user = userService.finndByLogin(login);
 
             if (user == null) {
-                throw new UsernameNotFoundException("User with username: " + username + " not found");
+                throw new UsernameNotFoundException("User with username: " + login + " not found");
             }
 
-            String token = jwtTokenProvider.createToken(username, user.getRoles().toString());
+            String token = jwtTokenProvider.createToken(login, user.getRoles().toString());
 
             Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
+            response.put("login", login);
             response.put("token", token);
 
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            throw new BadCredentialsException("Invalid username or password");
+            throw new BadCredentialsException("Invalid login or password");
         }
     }
 
@@ -62,5 +64,11 @@ public class AuthenticationRestControllerV1 {
     public void logout(HttpServletRequest request, HttpServletResponse response){
         SecurityContextLogoutHandler securityContextLogoutHandler = new SecurityContextLogoutHandler();
         securityContextLogoutHandler.logout(request,response,null);
+    }
+
+    @PostMapping("/registration")
+    public UserDto registration(@Valid @RequestBody UserDto unRegisteredUser){
+        unRegisteredUser = userService.registration(unRegisteredUser);
+        return unRegisteredUser;
     }
 }
