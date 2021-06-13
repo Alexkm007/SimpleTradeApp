@@ -1,12 +1,11 @@
 package ru.sta.simpletradeapp.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.sta.simpletradeapp.dto.UserDto;
 import ru.sta.simpletradeapp.model.User;
 import ru.sta.simpletradeapp.service.UserService;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -30,5 +29,26 @@ public class UserController {
         UserDto userDto = userService.getUserById(id);
         return userDto;
     }
+
+    @PostMapping("/add")
+    public UserDto addUser(@Valid @RequestBody UserDto userDto){
+        User userInBase = userService.findByLogin(userDto.getLogin());
+        if (userInBase == null || userDto.getId() != null) return null;
+
+        userDto = userService.addNewUser(userDto);
+        return userDto;
+    }
+
+    @PutMapping("/update")
+    public UserDto updateUser(@Valid @RequestBody UserDto userDto){
+        return userService.updateUser(userDto);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public Boolean deleteUser(@PathVariable Long id){
+       return userService.deleteUser(id);
+    }
+
+
 
 }

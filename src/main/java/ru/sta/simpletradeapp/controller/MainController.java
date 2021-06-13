@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class MainController {
 
+    @RequestMapping()
     public String getWelcome(){
         return "Welcome to  simple trade app";
     }
