@@ -36,26 +36,26 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         initialization();
         User user = userRepository.findByName(s);
-        if(user != null){
+        if (user != null) {
             return user;
         }
         throw new UsernameNotFoundException("User " + s + " not found");
     }
 
-    public User findByUsername(String s){
+    public User findByUsername(String s) {
         return userRepository.findByName(s);
     }
 
-    public User finndByLogin(String s){
+    public User findByLogin(String s) {
         return userRepository.findByLogin(s);
     }
 
-    public List<User>getAllUser(){
+    public List<User> getAllUser() {
         List<User> users = userRepository.findAll();
-        return  users;
+        return users;
     }
 
-    public UserDto registration(UserDto userDto){
+    public UserDto registration(UserDto userDto) {
 
         User user = userRepository.findByName(userDto.getName());
         if (user != null) {
@@ -74,17 +74,40 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public UserDto getUserById(Long id){
+    public UserDto getUserById(Long id) {
 
         User user = userRepository.findById(id).get();
-        if(user == null) return null;
+        if (user == null) return null;
         return new UserDto(user);
 
     }
 
-    private void initialization(){
+    public UserDto addNewUser(UserDto userDto) {
 
-        if(userRepository.findByName("admin")!=null) return;
+        User userToSave = new User(userDto);
+        userToSave = userRepository.saveAndFlush(userToSave);
+        return new UserDto(userToSave);
+
+    }
+
+    public UserDto updateUser(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId()).get();
+        if (user == null) return null;
+        user.updateFields(userDto);
+        user = userRepository.saveAndFlush(user);
+        return new UserDto(user);
+    }
+
+    public Boolean deleteUser(Long id){
+        User user = userRepository.findById(id).get();
+        if(user == null) return false;
+        userRepository.delete(user);
+        return true;
+    }
+
+    private void initialization() {
+
+        if (userRepository.findByName("admin") != null) return;
 
         Role admin = new Role("Admin");
         roleRepository.save(admin);
@@ -93,7 +116,7 @@ public class UserService implements UserDetailsService {
         userAdmin.setName("admin");
         userAdmin.setLogin("admin");
         userAdmin.setPassword("$2y$12$j6rzwpKFqeDRXGJxMYcuzOQnIWbJAqZB5x.PX8iG/a.Hyn89Nini2");
-        List<Role> roles= new ArrayList<>();
+        List<Role> roles = new ArrayList<>();
         roles.add(admin);
         userAdmin.setRoles(roles);
         userRepository.save(userAdmin);

@@ -76,4 +76,14 @@ public class User implements UserDetails, Serializable {
     public boolean isEnabled() {
         return enabled;
     }
+
+    public void updateFields(UserDto userDto){
+        this.login = userDto.getLogin();
+        this.name = userDto.getName();
+        this.surname = userDto.getSurname();
+        this.email = userDto.getLogin();
+        this.phoneNumber = userDto.getPhoneNumber();
+        this.enabled = userDto.getEnabled();
+    }
+
 }
