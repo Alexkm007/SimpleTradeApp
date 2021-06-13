@@ -74,6 +74,13 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public UserDto getUserById(Long id){
+
+        User user = userRepository.findById(id).get();
+        if(user == null) return null;
+        return new UserDto(user);
+
+    }
 
     private void initialization(){
 

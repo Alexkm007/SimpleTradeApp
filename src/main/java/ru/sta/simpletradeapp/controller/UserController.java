@@ -1,10 +1,13 @@
 package ru.sta.simpletradeapp.controller;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.sta.simpletradeapp.dto.UserDto;
 import ru.sta.simpletradeapp.model.User;
 import ru.sta.simpletradeapp.service.UserService;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
@@ -18,8 +21,14 @@ public class UserController {
     }
 
     @RequestMapping()
-    List<User> getAllUsers(){
+    public List<User> getAllUsers(){
         return userService.getAllUser();
+    }
+
+    @RequestMapping("/edit/{id}")
+    public UserDto getUser(@PathVariable("id") @NotNull Long id){
+        UserDto userDto = userService.getUserById(id);
+        return userDto;
     }
 
 }
