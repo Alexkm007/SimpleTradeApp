@@ -1,4 +1,4 @@
-package ru.sta.simpletradeapp.controller;
+package ru.sta.simpletradeapp.controller.rest;
 
 import org.springframework.web.bind.annotation.*;
 import ru.sta.simpletradeapp.dto.UserDto;
@@ -11,11 +11,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class UserRestController {
 
     final UserService  userService;
 
-    public UserController(UserService userService) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
     }
 

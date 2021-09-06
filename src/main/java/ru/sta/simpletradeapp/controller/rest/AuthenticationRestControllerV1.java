@@ -1,4 +1,4 @@
-package ru.sta.simpletradeapp.controller;
+package ru.sta.simpletradeapp.controller.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
